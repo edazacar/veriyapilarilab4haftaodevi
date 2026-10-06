@@ -1,0 +1,339 @@
+//1. ÖDEV
+/*
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Song {
+    char name;
+    struct Song* next;
+    struct Song* prev;
+} Song;
+
+void addSongToEnd(Song** head, char* name) {
+    Song* newSong = (Song*)malloc(sizeof(Song));
+    strcpy(newSong->name, name);
+    newSong->next = NULL;
+    newSong->prev = NULL;
+
+    if (*head == NULL) {
+        *head = newSong;
+        return;
+    }
+
+    Song* temp = *head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = newSong;
+    newSong->prev = temp;
+}
+
+void removeSong(Song** head, char* name) {
+    if (*head == NULL) {
+        printf("Liste bos\n");
+        return;
+    }
+
+    Song* temp = *head;
+    while (temp != NULL && strcmp(temp->name, name) != 0) {
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Sarki bulunamadi.\n");
+        return;
+    }
+
+    if (temp == *head) {
+        *head = temp->next;
+        if (*head != NULL) {
+            (*head)->prev = NULL;
+        }
+    } else {
+        temp->prev->next = temp->next;
+        if (temp->next != NULL) {
+            temp->next->prev = temp->prev;
+        }
+    }
+
+    free(temp);
+    printf("%s listeden silindi.\n", name);
+}
+
+void playNext(Song** current) {
+    if (*current == NULL) {
+        printf("Liste bos\n");
+        return;
+    }
+
+    if ((*current)->next != NULL) {
+        *current = (*current)->next;
+        printf("Calinan sarki: %s\n", (*current)->name);
+    } else {
+        printf("Son sarkidasiniz, sonraki sarki yok.\n");
+    }
+}
+
+void playPrevious(Song** current) {
+    if (*current == NULL) {
+        printf("Liste bos\n");
+        return;
+    }
+
+    if ((*current)->prev != NULL) {
+        *current = (*current)->prev;
+        printf("Calinan sarki: %s\n", (*current)->name);
+    } else {
+        printf("Ilk sarkidasiniz, onceki sarki yok.\n");
+    }
+}
+
+void displayPlaylist(Song* head) {
+    if (head == NULL) {
+        printf("Liste bos\n");
+        return;
+    }
+
+    Song* temp = head;
+    printf("Calma Listesi\n");
+    while (temp != NULL) {
+        printf("%s\n", temp->name);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    Song* head = NULL;
+    Song* current = NULL;
+    int choice;
+    char name;
+
+    while (1) {
+        printf("\n1. Sarki Ekle\n");
+        printf("2. Sarki Sil\n");
+        printf("3. Sonraki Sarki\n");
+        printf("4. Onceki Sarki\n");
+        printf("5. Listeyi Goster\n");
+        printf("6. Cikis\n");
+        printf("Seciminiz: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Sarki ismi: ");
+                scanf(" %[^\n]", name);
+                addSongToEnd(&head, name);
+                if (current == NULL) {
+                    current = head;
+                    printf("Calinan sarki: %s\n", current->name);
+                }
+                break;
+            case 2:
+                if (head == NULL) {
+                    printf("Liste bos\n");
+                    break;
+                }
+                printf("Silinecek sarki ismi: ");
+                scanf(" %[^\n]", name);
+                if (current != NULL && strcmp(current->name, name) == 0) {
+                    if (current->next != NULL) {
+                        current = current->next;
+                    } else {
+                        current = current->prev;
+                    }
+                }
+                removeSong(&head, name);
+                if (head == NULL) {
+                    current = NULL;
+                }
+                break;
+            case 3:
+                playNext(&current);
+                break;
+            case 4:
+                playPrevious(&current);
+                break;
+            case 5:
+                displayPlaylist(head);
+                break;
+            case 6:
+                return 0;
+            default:
+                printf("Gecersiz secim!\n");
+                break;
+        }
+    }
+
+    return 0;
+}
+*/
+//2. ÖDEV:
+/*
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+
+ typedef struct Word {
+     char text;
+     struct Word* next;
+ } Word;
+
+ void pushWord(Word** top, char* text) {
+     Word* newWord = (Word*)malloc(sizeof(Word));
+     strcpy(newWord->text, text);
+     newWord->next = *top;
+     *top = newWord;
+ }
+
+ void popWord(Word** top) {
+     if (*top == NULL) {
+         printf("Liste bos\n");
+         return;
+     }
+     Word* temp = *top;
+     *top = (*top)->next;
+     free(temp);
+ }
+
+ void showWords(Word* top) {
+     if (top == NULL) {
+         return;
+     }
+     showWords(top->next);
+     printf("%s ", top->text);
+ }
+
+ int main() {
+     Word* top = NULL;
+     char command;
+     char text;
+
+     while (1) {
+         printf("> ");
+         if (scanf("%s", command) != 1) break;
+
+         if (strcmp(command, "add") == 0) {
+             scanf("%s", text);
+             pushWord(&top, text);
+         } else if (strcmp(command, "undo") == 0) {
+             popWord(&top);
+         } else if (strcmp(command, "show") == 0) {
+             if (top == NULL) {
+                 printf("show -> Liste bos\n");
+             } else {
+                 printf("show -> ");
+                 showWords(top);
+                 printf("\n");
+             }
+         } else if (strcmp(command, "exit") == 0) {
+             break;
+         }
+     }
+
+     return 0;
+ }
+ */
+//3. öDEV:
+/*
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+
+ typedef struct PrintJob {
+     char fileName;
+     struct PrintJob* next;
+ } PrintJob;
+
+ typedef struct Queue {
+     PrintJob* front;
+     PrintJob* rear;
+ } Queue;
+
+ void enqueuePrintJob(Queue* q, char* fileName) {
+     PrintJob* newJob = (PrintJob*)malloc(sizeof(PrintJob));
+     strcpy(newJob->fileName, fileName);
+     newJob->next = NULL;
+
+     if (q->rear == NULL) {
+         q->front = newJob;
+         q->rear = newJob;
+     } else {
+         q->rear->next = newJob;
+         q->rear = newJob;
+     }
+     printf("%s kuyruga eklendi.\n", fileName);
+ }
+
+ void processNextJob(Queue* q) {
+     if (q->front == NULL) {
+         printf("Kuyruk bos, yazdirilacak dosya yok.\n");
+         return;
+     }
+
+     PrintJob* temp = q->front;
+     printf("Yazdiriliyor: %s\n", temp->fileName);
+     q->front = q->front->next;
+
+     if (q->front == NULL) {
+         q->rear = NULL;
+     }
+
+     free(temp);
+ }
+
+ void showQueue(Queue q) {
+     if (q.front == NULL) {
+         printf("Kuyruk bos\n");
+         return;
+     }
+
+     PrintJob* temp = q.front;
+     printf("\nYazici Kuyrugu \n");
+     while (temp != NULL) {
+         printf("%s\n", temp->fileName);
+         temp = temp->next;
+     }
+     printf("\n");
+ }
+
+ int main() {
+     Queue q;
+     q.front = NULL;
+     q.rear = NULL;
+
+     int choice;
+     char fileName;
+
+     while (1) {
+         printf("\n1. Yeni dosya ekle\n");
+         printf("2. Yazdir\n");
+         printf("3. Kuyrugu goster\n");
+         printf("4. Cikis\n");
+         printf("Seciminiz: ");
+         scanf("%d", &choice);
+
+         switch (choice) {
+             case 1:
+                 printf("Dosya adi girin: ");
+                 scanf(" %[^\n]", fileName);
+                 enqueuePrintJob(&q, fileName);
+                 break;
+             case 2:
+                 processNextJob(&q);
+                 break;
+             case 3:
+                 showQueue(q);
+                 break;
+             case 4:
+                 return 0;
+             default:
+                 printf("Gecersiz secim!\n");
+                 break;
+         }
+     }
+
+     return 0;
+ }
+ */
